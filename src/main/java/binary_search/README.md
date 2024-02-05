@@ -75,7 +75,7 @@ private static int binarySearch(int[] arr, int target){
     int start = 0;
     int end = arr.length;
     
-    while(end > start){
+    while(end >= start){
         int mid = (start + end) / 2;
         int value = arr[mid];
         

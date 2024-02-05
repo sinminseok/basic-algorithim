@@ -1,88 +1,49 @@
 package combination_permutation.permutation;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
-/*
-깊이를 1씩 증가키며 깊이에 따른 값을 넣어준다.
-깊이와 N이 같을때 백트래킹을 종료하고 출력한다.
-
-visit 배열을 사용해서 방문한 수는 재 방문하지 않도록 한다.
-arr 배열을 만들어서 깊이에 따른 값을 저장한다.
- */
 
 public class Main {
 
-    static int n;
-    static boolean[] visited;
-    static int[] arr;
-    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) {
+        int n = 2;
+        int[] numbers = {1, 2, 3, 4, 5};
+        List<List<Integer>> result = combi(n, numbers);
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-
-        n = Integer.parseInt(bf.readLine());
-        arr = new int[n];
-        visited = new boolean[n];
-        permutation(0);
-        System.out.println(sb);
-    }
-
-    public static void permutation(int depth) {
-        if (depth == n) {
-            for (int value : arr) {
-                sb.append(value).append(" ");
-            }
-            sb.append("\n");
-        }
-
-        for (int i = 0; i < n; i++) {
-            if (visited[i] == false) {
-                visited[i] = true;
-                arr[depth] = i + 1;
-                permutation(depth + 1);
-                visited[i] = false;
-            }
+        // 결과 출력
+        for (List<Integer> combination : result) {
+            System.out.println(combination);
         }
     }
+
+    private static List<List<Integer>> combi(int n, int[] numbers){
+        List<List<Integer >> result = new ArrayList<>();
+        List<Integer> currentCombination = new ArrayList<>();
+
+        backtrack(result, currentCombination, numbers, 0, n);
+
+        return result;
+    }
+
+    /*
+    backtrack은 재귀적으로 호출되며, 현재 인덱스 start 부터 배열 numbers 끝까지 반복한다.
+    currentCombination 리스트에 현재 인덱스의 값을 추가하고, 재귀적으로 다음 인덱스를 호출한다. 이때 길이가 n-1 인 조합을 생성하도록 한다.
+    재귀 호출이 완료되면 현재 인덱스에 대한 조합 생성이 끝났고 currentCombination 리스트에서 마지막 앖을 제거한다.
+     */
+    private static void backtrack(List<List<Integer>> result, List<Integer> currentCombination, int[] numbers, int start, int n){
+        if(n == 0){
+            result.add(new ArrayList<>(currentCombination));
+            return;
+        }
+
+        for(int i = start; i<numbers.length; i++){
+            currentCombination.add(numbers[i]);
+
+            backtrack(result, currentCombination, numbers, i+1, n-1);
+
+            currentCombination.remove(currentCombination.size() - 1);
+        }
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
